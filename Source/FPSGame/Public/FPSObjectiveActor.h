@@ -34,9 +34,6 @@ protected:
 	void PlayEffects();
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	/**
 	 *	Event when this actor overlaps another actor, for example a player walking into a trigger.
 	 *	For events when objects have a blocking collision, for example a player hitting a wall, see 'Hit' events.
