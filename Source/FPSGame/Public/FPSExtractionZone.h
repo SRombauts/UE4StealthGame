@@ -20,6 +20,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UBoxComponent* OverlapComponent;
 
+	// Decal for the extraction zone
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UDecalComponent* DecalComponent;
+
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
