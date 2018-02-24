@@ -16,23 +16,27 @@ ABlackHole::ABlackHole()
 	RootComponent = MeshComponent;
 
 	AttractionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("AttractionComp"));
+	AttractionComponent->SetSphereRadius(3000);
 	AttractionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	AttractionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	AttractionComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Overlap);
+	AttractionComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Overlap); // collision filters : only IsSimulatingPhysics() components
 	AttractionComponent->SetupAttachment(MeshComponent);
 
 	DestroyComponent = CreateDefaultSubobject<USphereComponent>(TEXT("DestroyComp"));
+	AttractionComponent->SetSphereRadius(100);
 	DestroyComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	DestroyComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	DestroyComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Overlap);
 	DestroyComponent->SetupAttachment(MeshComponent);
+	DestroyComponent->OnComponentBeginOverlap.AddDynamic(this, &ABlackHole::OnBeginOverlapDestroyComponent);
 }
 
-// Called when the game starts or when spawned
-void ABlackHole::BeginPlay()
+void ABlackHole::OnBeginOverlapDestroyComponent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::BeginPlay();
-	
+	if (OtherActor)
+	{
+		OtherActor->Destroy();
+	}
 }
 
 // Called every frame
@@ -46,23 +50,19 @@ void ABlackHole::Tick(float DeltaTime)
 	AttractionComponent->GetOverlappingComponents(ComponentsToAttract);
 	for (auto& ComponentToAttract : ComponentsToAttract)
 	{
-		const FVector ComponentLocation = ComponentToAttract->GetComponentLocation();
-		const FVector VectorToBlackHole = BlackHoleLocation - ComponentLocation;
-		const float Size = VectorToBlackHole.Size();
-		FVector Direction = VectorToBlackHole;
-		Direction.Normalize();
-		// Force should be inverse to the distance (SizeSquared() is more optimized but to harsh)
-		const float Coefficient = 1000 / Size;
-		const FVector ForceTowardBlackHole = Direction * DeltaTime * Coefficient * AttractionForce;
-		const bool bAccelChange = false; // If true, Force is taken as a change in acceleration instead of a physical force (i.e. mass will have no affect).
-		ComponentToAttract->AddForce(ForceTowardBlackHole, NAME_None, bAccelChange);
-	}
-
-	TArray<AActor*> ActorsToDestroy;
-	DestroyComponent->GetOverlappingActors(ActorsToDestroy);
-	for (auto& ActorToDestroy : ActorsToDestroy)
-	{
-		ActorToDestroy->Destroy();
+		if (ComponentToAttract && ComponentToAttract->IsSimulatingPhysics()) // NOTE: this is redundant with the collision filters we have applied
+		{
+			const FVector ComponentLocation = ComponentToAttract->GetComponentLocation();
+			const FVector VectorToBlackHole = BlackHoleLocation - ComponentLocation;
+			const float Size = VectorToBlackHole.Size();
+			FVector Direction = VectorToBlackHole;
+			Direction.Normalize();
+			// NOTE: Force should be inverse to the distance (using SizeSquared() is more "realist" and optimized but to harsh)
+			const float Coefficient = 1 / Size;
+			const FVector ForceTowardBlackHole = Direction * Coefficient * AttractionForce; // NOTE: no more DeltaTime since AddForce already take timestep into account
+			const bool bAccelChange = true; // If true, Force is taken as a change in acceleration instead of a physical force (i.e. mass will have no affect).
+			ComponentToAttract->AddForce(ForceTowardBlackHole, NAME_None, bAccelChange);
+		}
 	}
 }
 
