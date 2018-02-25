@@ -4,6 +4,7 @@
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -20,7 +21,30 @@ void AFPSGameMode::CompleteMission(APawn * InstigatorPawn)
 	if (InstigatorPawn)
 	{
 		InstigatorPawn->DisableInput(nullptr);
-	}
 
-	OnMissionCompleted(InstigatorPawn);
+		// BP implementation
+		OnMissionCompleted(InstigatorPawn);
+
+		if (SpectatorViewpointClass)
+		{
+			// Get Spectator Viewpoint
+			TArray<AActor*> SpectatorViewpoints;
+			UGameplayStatics::GetAllActorsOfClass(this, SpectatorViewpointClass, SpectatorViewpoints);
+			if (SpectatorViewpoints.Num() > 0)
+			{
+				AActor* SpectatorViewpoint = SpectatorViewpoints[0];
+
+				// Move camera to Spectator Viewpoint
+				APlayerController* PlayerController = Cast<APlayerController>(InstigatorPawn->GetController());
+				if (PlayerController && SpectatorViewpoint)
+				{
+					PlayerController->SetViewTargetWithBlend(SpectatorViewpoint, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+				}
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No Spectator Viewpoint Class specified. Please update GameMode. Cannot change ViewTarget."));
+		}
+	}
 }
