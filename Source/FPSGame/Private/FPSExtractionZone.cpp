@@ -24,7 +24,7 @@ AFPSExtractionZone::AFPSExtractionZone()
 	OverlapComponent->OnComponentBeginOverlap.AddDynamic(this, &AFPSExtractionZone::OnBeginOverlap);
 
 	DecalComponent = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComp"));
-	DecalComponent->SetupAttachment(OverlapComponent);
+	DecalComponent->SetupAttachment(RootComponent);
 	DecalComponent->DecalSize = FVector(200.f);
 }
 
