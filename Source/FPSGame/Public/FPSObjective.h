@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 
 #pragma once
 
@@ -8,6 +8,7 @@
 
 class USphereComponent;
 
+// The game Objective that the player has to pickup
 UCLASS()
 class FPSGAME_API AFPSObjective : public AActor
 {

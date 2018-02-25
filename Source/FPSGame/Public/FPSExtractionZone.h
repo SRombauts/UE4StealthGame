@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "FPSExtractionZone.generated.h"
 
+// The Extraction Zone where to carry the Objective
 UCLASS()
 class FPSGAME_API AFPSExtractionZone : public AActor
 {

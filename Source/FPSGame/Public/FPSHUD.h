@@ -1,4 +1,4 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 
 #pragma once 
 

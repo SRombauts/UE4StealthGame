@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "LaunchPad.generated.h"
 
+// A Launch Pad to launch the player in the air, as well as any other physic-enabled Actors
 UCLASS()
 class FPSGAME_API ALaunchPad : public AActor
 {

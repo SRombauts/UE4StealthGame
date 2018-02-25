@@ -1,4 +1,4 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "FPSGameMode.generated.h"
 
+// The Game Mode to trigger mission completion when the objective has been carried to the extraction zone
 UCLASS()
 class AFPSGameMode : public AGameModeBase
 {
