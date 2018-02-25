@@ -7,6 +7,7 @@ following the Udemy course "Unreal Engine 4 Mastery: Create Multiplayer Games" b
 - a game [Objective Actor](Source/FPSGame/Public/FPSObjective.h) that the player has to pickup
 - an [Extraction Zone](Source/FPSGame/Public/FPSExtractionZone.h) where to carry this objective
 - a [Game Mode](Source/FPSGame/Public/FPSGameMode.h) to trigger mission completion when the objective has been carried to the extraction zone
+- an [AI Guard](Source/FPSGame/Public/FPSAIGuard.h) opponent Character
 
 ## Challenges
 
