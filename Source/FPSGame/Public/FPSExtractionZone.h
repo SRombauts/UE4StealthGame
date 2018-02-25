@@ -24,6 +24,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UDecalComponent* DecalComponent;
 
+	// Sound to play when entering the extraction zone without the objective
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* MissingObjectiveSound;
+
+	// Sound to play on mission complete
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* MissionCompleteSound;
+
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	

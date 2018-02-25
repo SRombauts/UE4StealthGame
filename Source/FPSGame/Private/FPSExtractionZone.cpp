@@ -8,6 +8,7 @@
 #include "Components/DecalComponent.h"
 
 #include "Engine.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFPSExtractionZone::AFPSExtractionZone()
@@ -34,10 +35,10 @@ void AFPSExtractionZone::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	{
 		if (Character->bIsCarryingObjective)
 		{
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached with the objective.");
-			}
+			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached with the objective.");
+
+			UGameplayStatics::PlaySound2D(this, MissionCompleteSound);
+
 			AFPSGameMode* GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 			if (GameMode)
 			{
@@ -46,10 +47,9 @@ void AFPSExtractionZone::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		}
 		else
 		{
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached without the objective!");
-			}
+			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Extraction Zone reached without the objective!");
+
+			UGameplayStatics::PlaySound2D(this, MissingObjectiveSound);
 		}
 	}
 }
