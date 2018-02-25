@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FPSExtractionZone.h"
+#include "FPSCharacter.h"
+#include "FPSGameMode.h"
 
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
@@ -27,12 +29,27 @@ AFPSExtractionZone::AFPSExtractionZone()
 
 void AFPSExtractionZone::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor)
+	AFPSCharacter* Character = Cast<AFPSCharacter>(OtherActor);
+	if (Character)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Extraction Zone reached!"));
-		if (GEngine)
+		if (Character->bIsCarryingObjective)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached!");
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached with the objective.");
+			}
+			AFPSGameMode* GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+			if (GameMode)
+			{
+				GameMode->CompleteMission(Character);
+			}
+		}
+		else
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Extraction Zone reached without the objective!");
+			}
 		}
 	}
 }
