@@ -9,6 +9,7 @@
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
+class UPawnNoiseEmitterComponent;
 class AFPSProjectile;
 class USoundBase;
 class UAnimSequence;
@@ -32,6 +33,10 @@ protected:
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
+
+	/** Sound Emitter to distract the AI Guard */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
 
 public:
 	AFPSCharacter();

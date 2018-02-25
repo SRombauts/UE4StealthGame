@@ -15,6 +15,7 @@ AFPSAIGuard::AFPSAIGuard()
 
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	PawnSensingComponent->OnSeePawn.AddDynamic(this, &AFPSAIGuard::OnPawnSeen);
+	PawnSensingComponent->OnHearNoise.AddDynamic(this, &AFPSAIGuard::OnNoiseHeard);
 }
 
 // Called when the game starts or when spawned
@@ -33,8 +34,26 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 		{
 			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnPawnSeen: Character!");
 
-			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Yellow, false, 10.0f);
+			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 48.0f, 12, FColor::Red, false, 10.0f);
 		}
+	}
+}
+
+void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, float Volume)
+{
+	DrawDebugSphere(GetWorld(), Location, 32.0f, 12, FColor::Emerald, false, 10.0f);
+
+	if (InstigatorPawn)
+	{
+		ACharacter* Character = Cast<ACharacter>(InstigatorPawn);
+		if (Character)
+		{
+			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: Character!");
+		}
+	}
+	else
+	{
+		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: no pawn!");
 	}
 }
 
