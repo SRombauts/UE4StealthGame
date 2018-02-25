@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "FPSObjectiveActor.h"
+#include "FPSObjective.h"
 #include "FPSCharacter.h"
 #include "Components/DrawSphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-AFPSObjectiveActor::AFPSObjectiveActor()
+AFPSObjective::AFPSObjective()
 {
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -21,19 +21,19 @@ AFPSObjectiveActor::AFPSObjectiveActor()
 }
 
 // Called when the game starts or when spawned
-void AFPSObjectiveActor::BeginPlay()
+void AFPSObjective::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PlayEffects();
 }
 
-void AFPSObjectiveActor::PlayEffects()
+void AFPSObjective::PlayEffects()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(this, PickupFX, GetActorLocation());
 }
 
-void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
+void AFPSObjective::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 

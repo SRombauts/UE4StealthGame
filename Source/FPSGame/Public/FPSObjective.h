@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FPSObjectiveActor.generated.h"
+#include "FPSObjective.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class FPSGAME_API AFPSObjectiveActor : public AActor
+class FPSGAME_API AFPSObjective : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFPSObjectiveActor();
+	AFPSObjective();
 
 protected:
 
