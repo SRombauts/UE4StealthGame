@@ -16,14 +16,14 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn * InstigatorPawn)
+void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 {
 	if (InstigatorPawn)
 	{
 		InstigatorPawn->DisableInput(nullptr);
 
 		// BP implementation
-		OnMissionCompleted(InstigatorPawn);
+		OnMissionCompleted(InstigatorPawn, bSuccess);
 
 		if (SpectatorViewpointClass)
 		{

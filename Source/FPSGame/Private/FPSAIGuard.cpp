@@ -2,6 +2,8 @@
 
 #include "FPSAIGuard.h"
 
+#include "FPSGameMode.h"
+
 #include "Perception/PawnSensingComponent.h"
 
 #include "Engine.h"
@@ -36,6 +38,12 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnPawnSeen: Character!");
 
 			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 48.0f, 12, FColor::Red, false, DistractionDuration);
+
+			AFPSGameMode* GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+			if (GameMode)
+			{
+				GameMode->CompleteMission(Character, false); // false: Mission Failed
+			}
 		}
 	}
 }
