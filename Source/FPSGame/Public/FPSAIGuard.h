@@ -6,6 +6,14 @@
 #include "GameFramework/Character.h"
 #include "FPSAIGuard.generated.h"
 
+UENUM(BlueprintType)
+enum class EGuardState : uint8
+{
+	Idle,
+	Sucpicious,
+	Alerted
+};
+
 // The AI Guard opponent that tracks the player
 UCLASS()
 class FPSGAME_API AFPSAIGuard : public ACharacter
@@ -23,7 +31,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UWidgetComponent* WidgetComponent;
 
 	UFUNCTION()
@@ -34,6 +42,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
 	float DistractionDuration = 4.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "AI")
+	EGuardState GuardState = EGuardState::Idle;
+
+	void SetGuardSate(EGuardState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void OnStateChanged(EGuardState NewState);
 
 private:
 	FRotator OriginalRotation;

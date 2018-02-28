@@ -48,6 +48,7 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 			if (GameMode)
 			{
 				GameMode->CompleteMission(Character, false); // false: Mission Failed
+				SetGuardSate(EGuardState::Alerted);
 			}
 		}
 	}
@@ -74,11 +75,24 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 
 			GetWorldTimerManager().ClearTimer(TimerHandler_ResetOrientation);
 			GetWorldTimerManager().SetTimer(TimerHandler_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, DistractionDuration);
+
+			SetGuardSate(EGuardState::Sucpicious);
 		}
 	}
 	else
 	{
 		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: no pawn!");
+	}
+}
+
+void AFPSAIGuard::SetGuardSate(EGuardState NewState)
+{
+	if (NewState != GuardState)
+	{
+		GuardState = NewState;
+		
+		// BP Implementation
+		OnStateChanged(NewState);
 	}
 }
 
