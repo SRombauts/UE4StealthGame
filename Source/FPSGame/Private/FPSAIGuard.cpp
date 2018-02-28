@@ -5,8 +5,9 @@
 #include "FPSGameMode.h"
 
 #include "Perception/PawnSensingComponent.h"
+#include "Components/WidgetComponent.h"
 
-#include "Engine.h"
+//#include "Engine.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -18,6 +19,10 @@ AFPSAIGuard::AFPSAIGuard()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	PawnSensingComponent->OnSeePawn.AddDynamic(this, &AFPSAIGuard::OnPawnSeen);
 	PawnSensingComponent->OnHearNoise.AddDynamic(this, &AFPSAIGuard::OnNoiseHeard);
+
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
+	WidgetComponent->SetupAttachment(RootComponent);
+	WidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +40,7 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 		ACharacter* Character = Cast<ACharacter>(SeenPawn);
 		if (Character)
 		{
-			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnPawnSeen: Character!");
+		//	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnPawnSeen: Character!");
 
 			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 48.0f, 12, FColor::Red, false, DistractionDuration);
 
@@ -57,7 +62,7 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 		ACharacter* Character = Cast<ACharacter>(InstigatorPawn);
 		if (Character)
 		{
-			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: Character!");
+		//	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: Character!");
 
 			// Equivalent to Blueprint's FindLookAtRotation()
 			const FVector Direction = Location - GetActorLocation();

@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UWidgetComponent* WidgetComponent;
+
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
 
@@ -30,7 +33,7 @@ protected:
 	void OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, float Volume);
 
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
-	float DistractionDuration = 3.0f;
+	float DistractionDuration = 4.0f;
 
 private:
 	FRotator OriginalRotation;
