@@ -29,6 +29,15 @@ protected:
 	UFUNCTION()
 	void OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, float Volume);
 
+	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	float DistractionDuration = 3.0f;
+
+private:
+	FRotator OriginalRotation;
+	FTimerHandle TimerHandler_ResetOrientation;
+
+	void ResetOrientation();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

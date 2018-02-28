@@ -23,6 +23,7 @@ void AFPSAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	OriginalRotation = GetActorRotation();
 }
 
 void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
@@ -34,14 +35,14 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 		{
 			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnPawnSeen: Character!");
 
-			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 48.0f, 12, FColor::Red, false, 10.0f);
+			DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 48.0f, 12, FColor::Red, false, DistractionDuration);
 		}
 	}
 }
 
 void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, float Volume)
 {
-	DrawDebugSphere(GetWorld(), Location, 32.0f, 12, FColor::Emerald, false, 10.0f);
+	DrawDebugSphere(GetWorld(), Location, 32.0f, 12, FColor::Emerald, false, DistractionDuration);
 
 	if (InstigatorPawn)
 	{
@@ -49,12 +50,28 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 		if (Character)
 		{
 			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: Character!");
+
+			// Equivalent to Blueprint's FindLookAtRotation()
+			const FVector Direction = Location - GetActorLocation();
+			FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator();
+			// But only Yaw rotation (around the Z axis)
+			NewLookAt.Pitch = 0.0f;
+			NewLookAt.Roll = 0.0f;
+			SetActorRotation(NewLookAt);
+
+			GetWorldTimerManager().ClearTimer(TimerHandler_ResetOrientation);
+			GetWorldTimerManager().SetTimer(TimerHandler_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, DistractionDuration);
 		}
 	}
 	else
 	{
 		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "OnNoiseHeard: no pawn!");
 	}
+}
+
+void AFPSAIGuard::ResetOrientation()
+{
+	SetActorRotation(OriginalRotation);
 }
 
 // Called every frame
