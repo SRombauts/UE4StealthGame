@@ -3,6 +3,7 @@
 #include "FPSAIGuard.h"
 
 #include "FPSGameMode.h"
+#include "FPSAIController.h"
 
 #include "Perception/PawnSensingComponent.h"
 #include "Components/WidgetComponent.h"
@@ -87,18 +88,26 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 
 void AFPSAIGuard::SetGuardSate(EGuardState NewState)
 {
-	if (NewState != GuardState)
+	if (NewState != GuardState && GuardState != EGuardState::Alerted)
 	{
 		GuardState = NewState;
 		
 		// BP Implementation
 		OnStateChanged(NewState);
+
+		// Notify AI Controller
+		AFPSAIController* FPSAIController = Cast<AFPSAIController>(GetController());
+		if (FPSAIController)
+		{
+			FPSAIController->OnStateChanged(NewState);
+		}
 	}
 }
 
 void AFPSAIGuard::ResetOrientation()
 {
 	SetActorRotation(OriginalRotation);
+	SetGuardSate(EGuardState::Patrol);
 }
 
 // Called every frame

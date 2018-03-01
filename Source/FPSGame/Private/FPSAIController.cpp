@@ -2,6 +2,8 @@
 
 #include "FPSAIController.h"
 
+#include "FPSAIGuard.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
 
@@ -13,10 +15,23 @@ void AFPSAIController::BeginPlay()
 	// Get TargetPoint once at start-time
 	UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPoints);
 
-	GoToNextPoint();
+	MoveToTargetPoint();
 }
 
-void AFPSAIController::GoToNextPoint()
+void AFPSAIController::OnStateChanged(EGuardState NewState)
+{
+	// stop/resume moving
+	if (NewState != EGuardState::Patrol)
+	{
+		StopMovement();
+	}
+	else
+	{
+		MoveToTargetPoint();
+	}
+}
+
+void AFPSAIController::SelectTargetPoint()
 {
 	if (TargetPoints.Num() > 0)
 	{
@@ -24,7 +39,13 @@ void AFPSAIController::GoToNextPoint()
 		{
 			TargetPointsIndex = 0;
 		}
+	}
+}
 
+void AFPSAIController::MoveToTargetPoint()
+{
+	if (TargetPoints.Num() > 0)
+	{
 		AActor* TargetPoint = TargetPoints[TargetPointsIndex];
 		if (TargetPoint)
 		{
@@ -38,5 +59,9 @@ void AFPSAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollow
 {
 	Super::OnMoveCompleted(RequestID, Result);
 
-	GoToNextPoint();
+	if (!Result.IsInterrupted())
+	{
+		SelectTargetPoint();
+		MoveToTargetPoint();
+	}
 }

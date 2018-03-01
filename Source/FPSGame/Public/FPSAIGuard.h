@@ -9,7 +9,7 @@
 UENUM(BlueprintType)
 enum class EGuardState : uint8
 {
-	Idle,
+	Patrol,
 	Sucpicious,
 	Alerted
 };
@@ -44,7 +44,7 @@ protected:
 	float DistractionDuration = 4.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "AI")
-	EGuardState GuardState = EGuardState::Idle;
+	EGuardState GuardState = EGuardState::Patrol;
 
 	void SetGuardSate(EGuardState NewState);
 
