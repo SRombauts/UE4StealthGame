@@ -11,7 +11,8 @@ enum class EGuardState : uint8
 {
 	Patrol,
 	Sucpicious,
-	Alerted
+	Alerted,
+// 	MissionComplete // TODO: stop patrolling when mission is complete
 };
 
 // The AI Guard opponent that tracks the player
