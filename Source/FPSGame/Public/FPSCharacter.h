@@ -54,7 +54,7 @@ public:
 	UAnimSequence* FireAnimation;
 
 	/** Have we picked-up and Objective ? */
-	UPROPERTY(BlueprintReadOnly, CAtegory = "Gameplay")
+	UPROPERTY(Replicated, BlueprintReadOnly, CAtegory = "Gameplay")
 	bool bIsCarryingObjective = false;
 
 protected:

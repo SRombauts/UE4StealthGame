@@ -7,7 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Net/UnrealNetwork.h"
 
 AFPSCharacter::AFPSCharacter()
 {
@@ -129,4 +129,12 @@ void AFPSCharacter::Tick(float DeltaTime)
 		NewRot.Pitch = RemoteViewPitch * 360.0f / 255.0f; // Uncompress pitch from 1 byte to 360 degrees
 		CameraComponent->SetRelativeRotation(NewRot);
 	}
+}
+
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSCharacter, bIsCarryingObjective);
+//	DOREPLIFETIME_CONDITION(AFPSCharacter, bIsCarryingObjective, COND_OwnerOnly); // Optimization
 }
