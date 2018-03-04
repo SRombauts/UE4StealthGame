@@ -43,8 +43,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
 	float DistractionDuration = 4.0f;
 
-	UPROPERTY(BlueprintReadOnly, Category = "AI")
+	UPROPERTY(ReplicatedUsing = OnRep_GuardState, BlueprintReadOnly, Category = "AI")
 	EGuardState GuardState = EGuardState::Patrol;
+
+	UFUNCTION()
+	void OnRep_GuardState();
 
 	void SetGuardSate(EGuardState NewState);
 

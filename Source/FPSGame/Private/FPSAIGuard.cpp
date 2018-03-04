@@ -10,6 +10,7 @@
 
 //#include "Engine.h"
 #include "DrawDebugHelpers.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AFPSAIGuard::AFPSAIGuard()
@@ -86,12 +87,19 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 	}
 }
 
+// Client only replication callback
+void AFPSAIGuard::OnRep_GuardState()
+{
+	// BP Implementation
+	OnStateChanged(GuardState);
+}
+
 void AFPSAIGuard::SetGuardSate(EGuardState NewState)
 {
 	if (NewState != GuardState && GuardState != EGuardState::Alerted)
 	{
-		GuardState = NewState;
-		
+		GuardState = NewState; // This is done on the Server, and will replicate to the client
+
 		// BP Implementation
 		OnStateChanged(NewState);
 
@@ -116,3 +124,11 @@ void AFPSAIGuard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
+}
+
