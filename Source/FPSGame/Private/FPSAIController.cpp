@@ -15,7 +15,11 @@ void AFPSAIController::BeginPlay()
 	// Get TargetPoint once at start-time
 	UGameplayStatics::GetAllActorsOfClass(this, ATargetPoint::StaticClass(), TargetPoints);
 
-	MoveToTargetPoint();
+	AFPSAIGuard* FPSAIGuard = Cast<AFPSAIGuard>(GetPawn());
+	if (FPSAIGuard && FPSAIGuard->DoPatrol())
+	{
+		MoveToTargetPoint();
+	}
 }
 
 void AFPSAIController::OnStateChanged(EGuardState NewState)
@@ -27,7 +31,11 @@ void AFPSAIController::OnStateChanged(EGuardState NewState)
 	}
 	else
 	{
-		MoveToTargetPoint();
+		AFPSAIGuard* FPSAIGuard = Cast<AFPSAIGuard>(GetPawn());
+		if (FPSAIGuard && FPSAIGuard->DoPatrol())
+		{
+			MoveToTargetPoint();
+		}
 	}
 }
 

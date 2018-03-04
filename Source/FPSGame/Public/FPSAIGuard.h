@@ -51,6 +51,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
 	void OnStateChanged(EGuardState NewState);
 
+	UPROPERTY(EditAnywhere, Category = "AI")
+	bool bPatrol = false;
+
+public:
+	bool DoPatrol() const { return bPatrol; }
+
 private:
 	FRotator OriginalRotation;
 	FTimerHandle TimerHandler_ResetOrientation;
