@@ -11,8 +11,7 @@
  * - by the Extraction Zone to trigger mission completion when the objective has been carried successfully,
  * - by the AI Guard to trigger mission failure when the player has been spotted.
  *
- *  It changes the Camera ViewPoint of all Player Controllers on either Event,
- * and notifies the Game State via Multicast replication.
+ *  It notifies this Mission Completion Event to the Game State via Multicast replication.
 */
 UCLASS()
 class AFPSGameMode : public AGameModeBase
@@ -24,10 +23,6 @@ public:
 	AFPSGameMode();
 
 	void CompleteMission(APawn* InstigatorPawn, bool bSuccess);
-
-protected:
-	UPROPERTY(EditDefaultsOnly, Category = "GameMode")
-	TSubclassOf<AActor>	SpectatorViewpointClass;
 };
 
 

@@ -7,7 +7,8 @@
 #include "FPSPlayerController.generated.h"
 
 /**
- * The Player Controller is used to display Mission Complete Failure/Success text, triggered by the Game Mode (server side) through the Game State (replicated).
+ * The Player Controller is used to display Mission Complete Failure/Success text and change the Camera ViewPoint
+ * on Event triggered by the Game Mode (server side) through the Game State (replicated).
  */
 UCLASS()
 class FPSGAME_API AFPSPlayerController : public APlayerController
@@ -19,4 +20,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "PlayerController")
 	void OnMissionCompleted(APawn* InstigatorPawn, bool bMissionSuccess);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "PlayerController")
+	TSubclassOf<AActor>	SpectatorViewpointClass;
 };

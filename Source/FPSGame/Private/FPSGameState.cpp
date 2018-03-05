@@ -4,8 +4,6 @@
 
 #include "FPSPlayerController.h"
 
-#include "Engine/World.h"
-
 
 void AFPSGameState::MulticastOnMissionComplete_Implementation(APawn* InstigatorPawn, bool bMissionSuccess)
 {
