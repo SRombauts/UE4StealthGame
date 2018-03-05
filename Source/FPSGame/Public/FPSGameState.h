@@ -7,7 +7,7 @@
 #include "FPSGameState.generated.h"
 
 /**
- * 
+ * The Game State is replicated on Clients to transmit the Mission Complete Failure/Success status triggered by the Game Mode on the server.
  */
 UCLASS()
 class FPSGAME_API AFPSGameState : public AGameStateBase

@@ -25,6 +25,8 @@ void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 {
 	if (InstigatorPawn)
 	{
+		// Changes the Camera ViewPoint of all Player Controllers on either Event
+		// TODO: this whole thing should go directly into our custom PlayerController
 		if (SpectatorViewpointClass)
 		{
 			// Get Spectator Viewpoint
@@ -51,12 +53,10 @@ void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 		}
 	}
 
+	// Notifies the Game State via Multicast replication
 	AFPSGameState* GameState = GetGameState<AFPSGameState>();
 	if (GameState)
 	{
 		GameState->MulticastOnMissionComplete(InstigatorPawn, bSuccess);
 	}
-
-	// BP implementation
-	OnMissionCompleted(InstigatorPawn, bSuccess);
 }

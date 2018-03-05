@@ -14,13 +14,7 @@ void AFPSGameState::MulticastOnMissionComplete_Implementation(APawn* InstigatorP
 		AFPSPlayerController* PlayerController = Cast<AFPSPlayerController>(It->Get());
 		if (PlayerController && PlayerController->IsLocalController())
 		{
-			PlayerController->OnMissionCompleted(InstigatorPawn, bMissionSuccess);
-
-			APawn* Pawn = PlayerController->GetPawn();
-			if (Pawn)
-			{
-				Pawn->DisableInput(nullptr);
-			}
+			PlayerController->OnMissionComplete(InstigatorPawn, bMissionSuccess);
 		}
 	}
 }

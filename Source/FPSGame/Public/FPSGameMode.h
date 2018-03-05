@@ -6,7 +6,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "FPSGameMode.generated.h"
 
-// The Game Mode to trigger mission completion when the objective has been carried to the extraction zone
+/**
+ * The Game Mode is a Server-only instance that is called either:
+ * - by the Extraction Zone to trigger mission completion when the objective has been carried successfully,
+ * - by the AI Guard to trigger mission failure when the player has been spotted.
+ *
+ *  It changes the Camera ViewPoint of all Player Controllers on either Event,
+ * and notifies the Game State via Multicast replication.
+*/
 UCLASS()
 class AFPSGameMode : public AGameModeBase
 {
@@ -17,9 +24,6 @@ public:
 	AFPSGameMode();
 
 	void CompleteMission(APawn* InstigatorPawn, bool bSuccess);
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
-	void OnMissionCompleted(APawn* InstigatorPawn, bool bSuccess);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GameMode")
