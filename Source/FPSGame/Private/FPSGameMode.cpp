@@ -2,6 +2,8 @@
 
 #include "FPSGameMode.h"
 
+#include "FPSAIController.h"
+#include "FPSAIGuard.h"
 #include "FPSCharacter.h"
 #include "FPSGameState.h"
 #include "FPSHUD.h"
@@ -22,12 +24,24 @@ AFPSGameMode::AFPSGameMode()
 
 void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 {
-	// Notifies the Game State via Multicast replication
+	// Notify the Game State via Multicast replication
 	AFPSGameState* GameState = GetGameState<AFPSGameState>();
 	if (GameState)
 	{
 		GameState->MulticastOnMissionComplete(InstigatorPawn, bSuccess);
 	}
 
-	// TODO: notify All AI Controllers
+	// Notify all AI Guards (through their Controller) that the Game as stopped
+	for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; It++)
+	{
+		AFPSAIController* AIController = Cast<AFPSAIController>(It->Get());
+		if (AIController)
+		{
+			AFPSAIGuard* AIGuard = Cast<AFPSAIGuard>(AIController->GetPawn());
+			if (AIGuard)
+			{
+				AIGuard->SetGuardState(EGuardState::MissionComplete);
+			}
+		}
+	}
 }

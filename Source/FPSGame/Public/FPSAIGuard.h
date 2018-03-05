@@ -12,7 +12,7 @@ enum class EGuardState : uint8
 	Patrol,
 	Sucpicious,
 	Alerted,
-// 	MissionComplete // TODO: stop patrolling when mission is complete
+ 	MissionComplete // Either Success or Failure
 };
 
 // The AI Guard opponent that tracks the player
@@ -24,6 +24,8 @@ class FPSGAME_API AFPSAIGuard : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AFPSAIGuard();
+
+	void SetGuardState(EGuardState NewState);
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,8 +51,6 @@ protected:
 
 	UFUNCTION()
 	void OnRep_GuardState();
-
-	void SetGuardSate(EGuardState NewState);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
 	void OnStateChanged(EGuardState NewState);

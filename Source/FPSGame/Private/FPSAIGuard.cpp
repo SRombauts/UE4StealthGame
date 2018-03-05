@@ -49,8 +49,8 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 			AFPSGameMode* GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 			if (GameMode)
 			{
+				SetGuardState(EGuardState::Alerted);
 				GameMode->CompleteMission(Character, false); // false: Mission Failed
-				SetGuardSate(EGuardState::Alerted);
 			}
 		}
 	}
@@ -78,7 +78,7 @@ void AFPSAIGuard::OnNoiseHeard(APawn* InstigatorPawn, const FVector& Location, f
 			GetWorldTimerManager().ClearTimer(TimerHandler_ResetOrientation);
 			GetWorldTimerManager().SetTimer(TimerHandler_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, DistractionDuration);
 
-			SetGuardSate(EGuardState::Sucpicious);
+			SetGuardState(EGuardState::Sucpicious);
 		}
 	}
 	else
@@ -94,9 +94,10 @@ void AFPSAIGuard::OnRep_GuardState()
 	OnStateChanged(GuardState);
 }
 
-void AFPSAIGuard::SetGuardSate(EGuardState NewState)
+void AFPSAIGuard::SetGuardState(EGuardState NewState)
 {
-	if (NewState != GuardState && GuardState != EGuardState::Alerted)
+	// Do not change state when mission already lost or completed
+	if (NewState != GuardState && GuardState != EGuardState::Alerted && GuardState != EGuardState::MissionComplete)
 	{
 		GuardState = NewState; // This is done on the Server, and will replicate to the client
 
@@ -114,8 +115,12 @@ void AFPSAIGuard::SetGuardSate(EGuardState NewState)
 
 void AFPSAIGuard::ResetOrientation()
 {
-	SetActorRotation(OriginalRotation);
-	SetGuardSate(EGuardState::Patrol);
+	// Do not reset orientation when mission already lost or completed
+	if (GuardState != EGuardState::Alerted && GuardState != EGuardState::MissionComplete)
+	{
+		SetActorRotation(OriginalRotation);
+		SetGuardState(EGuardState::Patrol);
+	}
 }
 
 // Called every frame
