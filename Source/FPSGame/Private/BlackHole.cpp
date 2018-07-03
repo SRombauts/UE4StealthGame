@@ -23,7 +23,7 @@ ABlackHole::ABlackHole()
 	AttractionComponent->SetupAttachment(MeshComponent);
 
 	DestroyComponent = CreateDefaultSubobject<USphereComponent>(TEXT("DestroyComp"));
-	AttractionComponent->SetSphereRadius(100);
+	DestroyComponent->SetSphereRadius(100);
 	DestroyComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	DestroyComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	DestroyComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Overlap);
