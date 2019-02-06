@@ -39,6 +39,7 @@ void AFPSExtractionZone::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 			UGameplayStatics::PlaySound2D(this, MissionCompleteSound);
 
+			// GameMode is Server Side only
 			AFPSGameMode* GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 			if (GameMode)
 			{

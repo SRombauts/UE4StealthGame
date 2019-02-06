@@ -9,15 +9,15 @@
 // Sets default values
 AFPSObjective::AFPSObjective()
 {
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	RootComponent = MeshComp;
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RootComponent = MeshComponent;
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	SphereComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	SphereComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	SphereComp->SetupAttachment(MeshComp);
+	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	SphereComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	SphereComponent->SetupAttachment(MeshComponent);
 
 	// Replicate for Network Multi-player
 	SetReplicates(true);

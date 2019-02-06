@@ -12,7 +12,8 @@
 
 AFPSGameMode::AFPSGameMode()
 {
-	// set default pawn class to our Blueprinted character
+	// set default pawn class to our Blueprinted character (should be done in Blueprints since it's a BP)
+	// TODO:
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_Player"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
@@ -24,14 +25,14 @@ AFPSGameMode::AFPSGameMode()
 
 void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 {
-	// Notify the Game State via Multicast replication
+	// Notify all the Clients through the Game State using Multicast replication
 	AFPSGameState* GameState = GetGameState<AFPSGameState>();
 	if (GameState)
 	{
 		GameState->MulticastOnMissionComplete(InstigatorPawn, bSuccess);
 	}
 
-	// Notify all AI Guards (through their Controller) that the Game as stopped
+	// On the Server, notify all AI Guards (through their Controller) that the Game as stopped
 	for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; It++)
 	{
 		AFPSAIController* AIController = Cast<AFPSAIController>(It->Get());
