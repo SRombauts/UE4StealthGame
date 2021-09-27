@@ -26,10 +26,10 @@ AFPSGameMode::AFPSGameMode()
 void AFPSGameMode::CompleteMission(APawn * InstigatorPawn, bool bSuccess)
 {
 	// Notify all the Clients through the Game State using Multicast replication
-	AFPSGameState* GameState = GetGameState<AFPSGameState>();
-	if (GameState)
+	AFPSGameState* MyGameState = GetGameState<AFPSGameState>();
+	if (MyGameState)
 	{
-		GameState->MulticastOnMissionComplete(InstigatorPawn, bSuccess);
+		MyGameState->MulticastOnMissionComplete(InstigatorPawn, bSuccess);
 	}
 
 	// On the Server, notify all AI Guards (through their Controller) that the Game as stopped

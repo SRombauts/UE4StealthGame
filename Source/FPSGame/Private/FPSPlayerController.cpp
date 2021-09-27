@@ -6,10 +6,10 @@
 
 void AFPSPlayerController::OnMissionComplete(APawn* InstigatorPawn, bool bMissionSuccess)
 {
-	APawn* Pawn = GetPawn();
-	if (Pawn)
+	APawn* MyPawn = GetPawn();
+	if (MyPawn)
 	{
-		Pawn->DisableInput(nullptr);
+		MyPawn->DisableInput(nullptr);
 	}
 
 	if (SpectatorViewpointClass)

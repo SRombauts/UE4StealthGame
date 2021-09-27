@@ -47,9 +47,9 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
 
-	if (Role == ENetRole::ROLE_Authority)
+	if (GetLocalRole() == ENetRole::ROLE_Authority)
 	{
-		MakeNoise(1.0f, Instigator); // Needs investigator to be set appropriately when Spawn
+		MakeNoise(1.0f, GetInstigator()); // Needs investigator to be set appropriately when Spawn
 
 		Destroy();
 	}
