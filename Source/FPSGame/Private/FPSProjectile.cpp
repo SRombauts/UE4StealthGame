@@ -32,7 +32,7 @@ AFPSProjectile::AFPSProjectile()
 	InitialLifeSpan = 3.0f;
 
 	// Replicate for Network Multi-player
-	SetReplicates(true);
+	bReplicates = true; // Directly setting bReplicates is the correct procedure for pre-init actors.
 	SetReplicateMovement(true);
 }
 

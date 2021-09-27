@@ -20,7 +20,7 @@ AFPSObjective::AFPSObjective()
 	SphereComponent->SetupAttachment(MeshComponent);
 
 	// Replicate for Network Multi-player
-	SetReplicates(true);
+	bReplicates = true; // Directly setting bReplicates is the correct procedure for pre-init actors.
 }
 
 // Called when the game starts or when spawned
